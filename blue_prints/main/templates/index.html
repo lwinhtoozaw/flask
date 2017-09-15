@@ -1,0 +1,13 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Main Page{% endblock %}
+
+{% block style %}
+    <script type=text/javascript src="{{ url_for('main.static', filename = 'js/sdk.js') }}"></script>
+    <script type=text/javascript src="{{ url_for('main.static', filename = 'js/fb_login.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <h1>This is the Main Page</h1>
+    <button onclick="check_login_state();" type="button">Facebook Login</button>
+{% endblock %}
