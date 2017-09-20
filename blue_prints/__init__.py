@@ -1,6 +1,8 @@
 from flask import Flask
+import os
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
 app.config.from_pyfile('config.py')
 
 from blue_prints.main.views import main
