@@ -12,11 +12,11 @@
 
 {% block content %}
     <h1>This is the Main Page</h1>
-    <div id="error"></div>
-    <div id="email"></div>
-    {% if 'user_id' in session %}
-        <button onclick="logout();" type="button">Logout</button>
-    {% else %}
-        <button onclick="check_login_state();" type="button">Facebook Login</button>
-    {% endif %}
+    <div id="login">
+        {% if 'user_id' not in session %}
+
+        {% else %}
+            <button onclick="check_login_state();" type="button">Facebook Login</button>
+        {% endif %}
+    </div>
 {% endblock %}

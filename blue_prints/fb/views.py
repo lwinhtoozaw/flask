@@ -36,5 +36,10 @@ def fb_login():
         except User.DoesNotExist:
             user = User.create(fb_user_id = user_id)
         session['user_id'] = user.id
-    return str(user.id)
+    return 'true'
+
+@fb.route('/logout', methods=['POST'])
+def logout():
+    session.pop('user_id', None)
+    return 'true'
 

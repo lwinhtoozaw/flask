@@ -1,7 +1,7 @@
 function login(){
     FB.api('/me?fields=id,name,email', function (response) {
         var obj = {
-            id: response.id
+            id: response.id,
         };
          var data_json = JSON.stringify(obj, null, '\t');
         $.ajax({
@@ -25,6 +25,21 @@ function check_login_state(){
     }, {
         scope: 'public_profile, email',
         return_scopes: true
+    });
+}
+
+function log_out() {
+    $.ajax({
+        method: "POST",
+        url: "/fb/logout",
+        success: function(data) {
+            if(data == "true"){
+                location.reload()
+            }
+        },
+        error: function(){
+			alert("Something went wrong.")
+		}
     });
 }
 
