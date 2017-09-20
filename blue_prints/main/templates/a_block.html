@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<h1>This is the Main Page</h1>
 
-</body>
-</html>
+<div id="error"></div>
+
+<div id="test"></div>
+
+{% if 'user_id' in session %}
+    <button onclick="log_out();" type="button">Logout</button>
+{% else %}
+    <button onclick="check_login_state();" type="button">Facebook Login</button>
+{% endif %}

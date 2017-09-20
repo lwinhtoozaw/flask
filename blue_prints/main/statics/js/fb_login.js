@@ -1,5 +1,5 @@
-function login(){
-    FB.api('/me?fields=id,name,email', function (response) {
+function log_in(){
+    FB.api('/me?fields=id,name,email,picture', function (response) {
         var obj = {
             id: response.id,
         };
@@ -10,8 +10,8 @@ function login(){
             data: data_json,
             contentType: 'application/json;charset=UTF-8',
             success: function(data) {
-                $('#error').html(data)
-                $('#email').html(response.email)
+                $('#test').html(data)
+                $('#error').html(response.picture)
             }
         });
     });
@@ -20,7 +20,7 @@ function login(){
 function check_login_state(){
     FB.login(function(response) {
         if (response.status === 'connected') {
-            login();
+            log_in();
         }
     }, {
         scope: 'public_profile, email',
