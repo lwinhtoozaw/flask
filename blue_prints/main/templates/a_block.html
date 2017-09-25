@@ -1,9 +1,14 @@
-<h1>This is the Main Page</h1>
-
+<script>
+FB.getLoginStatus(function (response) {
+    FB.api('/me?fields=id,name,email', function (response) {
+        $('#test').html(response.email);
+    });
+});
+</script>
 <div id="error"></div>
+<div id="test">
 
-<div id="test"></div>
-
+</div>
 {% if 'user_id' in session %}
     <button onclick="log_out();" type="button">Logout</button>
 {% else %}

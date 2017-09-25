@@ -1,12 +1,10 @@
 function load(){
-	$.ajax({
-		url:"/a_block",
-		method: "POST",
-		success: function(data){
-			$('#a_block').html(data);
-		},
-		error: function(){
-			alert("Something went wrong.")
-		}
-	});
+    $.ajax({
+        type: "POST",
+        url: "/a_block",
+        success: function(data){
+            $('#a_block').html(data);
+        }
+    });
 }
+

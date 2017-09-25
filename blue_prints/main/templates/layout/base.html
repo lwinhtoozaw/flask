@@ -5,13 +5,20 @@
     <title>
         {% block title %}{% endblock %}
     </title>
+
     {% for link in css %}
-        <link rel="stylesheet" type="text/css" href="{{ url_for('site.static', filename = 'css/'+link) }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('main.static', filename = 'css/'+link) }}">
     {% endfor %}
+
     {% block style %}{% endblock %}
 </head>
 <body onload="load();">
     {% block content %}{% endblock %}
     {% block footer %}{% endblock %}
 </body>
+
+    {% for link in js %}
+        <script type=text/javascript src="{{ url_for('main.static', filename = 'js/'+link) }}"></script>
+    {% endfor %}
+
 </html>
