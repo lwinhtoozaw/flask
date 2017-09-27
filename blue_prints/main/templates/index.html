@@ -3,16 +3,12 @@
 {% block title %}Main Page{% endblock %}
 
 {% block style %}
+    <!-- jQuery CDN -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="{{ url_for('main.static', filename='js/jquery.js') }}">\x3C/script>')</script>
-
-    <script type=text/javascript src="{{ url_for('main.static', filename = 'js/sdk.js') }}"></script>
-    <script type=text/javascript src="{{ url_for('main.static', filename = 'js/fb_login.js') }}"></script>
+    <!-- jQuery local fallback -->
+    <script>window.jQuery || document.write('<script src="{{ url_for('main.static', filename='js/jquery.min.js') }}">\x3C/script>')</script>
 {% endblock %}
 
 {% block content %}
-    <h1>This is the Main Page</h1>
-    <div id="error"></div>
-    <div id="email"></div>
-    <button onclick="check_login_state();" type="button">Facebook Login</button>
+    <div id="a_block"></div>
 {% endblock %}

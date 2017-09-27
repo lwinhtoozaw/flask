@@ -17,7 +17,3 @@ class User(BaseModel):
 def initialize_db():
     db.connect()
     db.create_tables([User], safe = True)
-
-def close_db():
-    if not db.is_closed():
-        db.close()

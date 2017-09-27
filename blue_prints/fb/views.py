@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, session, request
 
 # Models
 from ..models.model_1 import *
@@ -10,19 +10,44 @@ def before_request():
     # Create db if needed and connect
     initialize_db()
 
-# This hook ensures that the connection is closed when we've finished
-# processing the request.
+@fb.after_request
+def after_request(response):
+    db.close()
+    return response
+
+# This hook ensures that the connection is closed when we've finished processing the request.
 @fb.teardown_request
 def _db_close(exc):
-    close_db()
+    if not db.is_closed():
+        db.close()
+
+@fb.route('/')
+def index():
+    if 'user_id' in session:
+        return str(session['user_id'])
+    return 'You are not logged in.'
+
+@fb.route('/test/')
+def test():
+    q = User.raw('select fb_user_id from public.user')
+    k = []
+    for user in q:
+        k.append(user.fb_user_id)
+    return str(k);
 
 @fb.route('/fb_login', methods=['POST'])
 def fb_login():
-    user_id = request.json['id']
-    user = User.select().where(User.fb_user_id == user_id)
-    if not user.exists():
-        user = User.create(fb_user_id=user_id)
-        return user_id + ' has been created'
-    else:
-        return user_id + ' already exists'
+    if 'user_id' not in session:
+        user_id = request.json['id']
+        try:
+            user = User.get(fb_user_id = user_id)
+        except User.DoesNotExist:
+            user = User.create(fb_user_id = user_id)
+        session['user_id'] = user.id
+    return 'true'
+
+@fb.route('/logout', methods=['POST'])
+def logout():
+    session.pop('user_id', None)
+    return 'true'
 
