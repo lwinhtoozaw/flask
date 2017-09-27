@@ -11,4 +11,4 @@ from blue_prints.admin.views import admin
 
 app.register_blueprint(main)
 app.register_blueprint(fb, url_prefix='/fb')
-app.register_blueprint(fb, url_prefix='/admin')
+app.register_blueprint(admin, url_prefix='/admin')

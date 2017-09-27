@@ -27,6 +27,14 @@ def index():
         return str(session['user_id'])
     return 'You are not logged in.'
 
+@fb.route('/test/')
+def test():
+    q = User.raw('select fb_user_id from public.user')
+    k = []
+    for user in q:
+        k.append(user.fb_user_id)
+    return str(k);
+
 @fb.route('/fb_login', methods=['POST'])
 def fb_login():
     if 'user_id' not in session:
