@@ -15,10 +15,8 @@
 <body onload="load();">
     {% block content %}{% endblock %}
     {% block footer %}{% endblock %}
-</body>
-
     {% for link in js %}
         <script type=text/javascript src="{{ url_for('main.static', filename = 'js/'+link) }}"></script>
     {% endfor %}
-
+</body>
 </html>

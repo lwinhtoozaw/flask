@@ -5,8 +5,9 @@ main = Blueprint('main', __name__, static_folder='statics', template_folder='tem
 # Views
 @main.route('/')
 def index():
+    css = ['main.css']
     js = ['fb_sdk.js', 'fb_login.js', 'main.js']
-    return render_template('index.html', js = js)
+    return render_template('index.html', js = js, css = css)
 
 @main.route('/a_block', methods = ['POST'])
 def a_block():

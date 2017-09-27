@@ -10,8 +10,7 @@ function log_in(){
             data: data_json,
             contentType: 'application/json;charset=UTF-8',
             success: function(data) {
-                $('#test').html(data)
-                $('#error').html(response.name)
+                location.reload();
             }
         });
     });
