@@ -3,9 +3,14 @@ import redis
 
 admin = Blueprint('admin', __name__)
 
-r = redis.StrictRedis(host = 'localhost', port = 6379, db = 0)
+r = redis.StrictRedis(host = 'localhost', port = 6379, db=0)
+
+@admin.route('/set/')
+def set():
+	r.set('too', 'tar')
+	return 'True'
 
 @admin.route('/')
 def index():
-    return 'lol';
-
+	value = r.keys()
+	return str(value)

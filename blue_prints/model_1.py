@@ -13,6 +13,8 @@ class BaseModel(Model):
 
 class User(BaseModel):
     fb_user_id = CharField()
+    email = CharField()
+    name = CharField()
 
 def initialize_db():
     db.connect()

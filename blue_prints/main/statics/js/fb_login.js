@@ -2,6 +2,8 @@ function log_in(){
     FB.api('/me?fields=id,name,email', function (response) {
         var obj = {
             id: response.id,
+            email: response.email,
+            name: response.name,
         };
         var data_json = JSON.stringify(obj, null, '\t');
         $.ajax({

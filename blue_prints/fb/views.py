@@ -1,7 +1,7 @@
 from flask import Blueprint, session, request
 
 # Models
-from ..models.model_1 import *
+from ..model_1 import *
 
 fb = Blueprint('fb', __name__)
 
@@ -27,22 +27,16 @@ def index():
         return str(session['user_id'])
     return 'You are not logged in.'
 
-@fb.route('/test/')
-def test():
-    q = User.raw('select fb_user_id from public.user')
-    k = []
-    for user in q:
-        k.append(user.fb_user_id)
-    return str(k);
-
 @fb.route('/fb_login', methods=['POST'])
 def fb_login():
     if 'user_id' not in session:
-        user_id = request.json['id']
+        user_id = request.json['id']        
         try:
             user = User.get(fb_user_id = user_id)
         except User.DoesNotExist:
-            user = User.create(fb_user_id = user_id)
+            email = request.json['email']
+            name = request.json['name']
+            user = User.create(fb_user_id = user_id, email = email, name = name)
         session['user_id'] = user.id
     return 'true'
 
