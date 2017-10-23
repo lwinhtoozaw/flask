@@ -7,10 +7,10 @@ r = redis.StrictRedis(host = 'localhost', port = 6379, db=0)
 
 @admin.route('/set/')
 def set():
-	r.set('too', 'tar')
-	return 'True'
+	v = r.hset('user', 'age', 23)
+	return str(v)
 
 @admin.route('/')
 def index():
-	value = r.keys()
+	value = r.hmget('user', 'age')
 	return str(value)
