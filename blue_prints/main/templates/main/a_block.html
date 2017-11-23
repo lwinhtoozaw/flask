@@ -1,0 +1,39 @@
+<div class="topnav" id="myTopnav">
+    <span id="slide">close</span>
+    <a href="#" class="icon" >Home</a>
+
+    <form>
+        <input type="text" id="search_box" class="input_form"   placeholder="Search Here">
+    </form>
+    <a href="javascript:void(0);" class="drop-btn nav-button" onclick="slide();">&#9776;</a>
+
+    <div id="drop">
+    </div>
+
+</div>
+
+<div id="mySidenav" class="sidenav">
+
+</div>
+
+<div class="bottom-navbar">
+    {% if 'user_id' in session %}
+        <a class="nav-button" onclick="log_out();">
+           Logout
+        </a>
+    {% else %}
+        <script>
+        FB.getLoginStatus(function (response) {
+            if (response.status === 'connected') {
+                FB.api('/me?fields=id,name,email', function (response) {
+                    $('#fb_img').html('<img class="fb_img" src="'+'http://graph.facebook.com/' + response.id + '/picture">');
+                });
+            }
+        });
+        </script>
+        <a class="nav-button" onclick="check_login_state();" type="button">
+           Login with facebook <span id="fb_img"></span>
+        </a>
+    {% endif %}
+</div>
+
