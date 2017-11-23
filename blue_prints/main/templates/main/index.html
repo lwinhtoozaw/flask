@@ -1,0 +1,116 @@
+{% extends "main/layout/base.html" %}
+
+{% block title %}Main Page{% endblock %}
+
+{% block style %}
+    <!-- jQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <!-- jQuery local fallback -->
+    <script>window.jQuery || document.write('<script src="{{ url_for('main.static', filename='main/js/jquery.min.js') }}">\x3C/script>')</script>
+{% endblock %}
+
+{% block content %}
+    <div id="a_block"></div>
+    <div id="map"></div>
+{% endblock %}
+
+{% block footer %}
+<script type="text/javascript">
+var csrf_token = "{{ csrf_token() }}";
+
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrf_token);
+        }
+    }
+});
+
+// Note: This example requires that you consent to location sharing when
+// prompted by your browser. If you see the error "The Geolocation service
+// failed.", it means you probably did not give permission for the browser to
+// locate you.
+var map, infoWindow;
+function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 16.772032, lng: 96.162492},
+      zoom: 16,
+      mapTypeId: 'roadmap'
+    });
+    infoWindow = new google.maps.InfoWindow;
+
+    var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+    var icons = {
+        parking: {
+        icon: iconBase + 'parking_lot_maps.png'
+        },
+        library: {
+        icon: iconBase + 'library_maps.png'
+        },
+        info: {
+        icon: iconBase + 'info-i_maps.png'
+        }
+    };
+
+    var features = [
+      {
+        position: new google.maps.LatLng(16.788474, 96.163790),
+        type: 'info'
+      }, {
+        position: new google.maps.LatLng(16.786772, 96.160710),
+        type: 'info'
+      }, {
+        position: new google.maps.LatLng(16.788713, 96.161525),
+        type: 'info'
+      }, {
+        position: new google.maps.LatLng(16.789982, 96.161584),
+        type: 'info'
+      }, {
+        position: new google.maps.LatLng(16.791569, 96.165044),
+        type: 'parking'
+      }, {
+        position: new google.maps.LatLng(16.792663, 96.164985),
+        type: 'library'
+      }
+    ];
+
+    // Create markers.
+    features.forEach(function(feature) {
+      var marker = new google.maps.Marker({
+        position: feature.position,
+        icon: icons[feature.type].icon,
+        map: map
+      });
+    });
+
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+
+        infoWindow.setPosition(pos);
+        infoWindow.setContent('Location found.');
+        infoWindow.open(map);
+        map.setCenter(pos);
+      }, function() {
+        handleLocationError(true, infoWindow, map.getCenter());
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+}
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+                          'Error: The Geolocation service failed.' :
+                          'Error: Your browser doesn\'t support geolocation.');
+    infoWindow.open(map);
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFmRwP64rMdRU4PxtZD_pEMUow7GVFoxc&callback=initMap"></script>
+{% endblock %}

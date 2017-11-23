@@ -1,0 +1,151 @@
+html, body {
+    font: 400 16px/24px Roboto,sans-serif;
+    letter-spacing: .02em;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#map {
+    height: 100%;
+}
+
+.icon {
+    cursor: hand;
+    cursor: pointer;
+}
+
+.input_form {
+    width: 30%;
+    min-width: 200px;
+    float: left;
+    padding: 10px;
+    margin: 8px 5px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* RESPONSIVE TOP NAV */
+/* Add a black background color to the top navigation */
+.topnav {
+    overflow: hidden;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+    box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
+    z-index: 2;
+    padding: 0px;
+    margin: 0px;
+    background-color: white;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+    float: left;
+    display: block;
+    text-align: center;
+    font-weight: 400;
+    text-decoration: none;
+    padding: 15px;
+    font-size: 15px;
+    color: black;
+    margin: 0px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+    background-color: #3897f0;
+    color: white;
+}
+
+.nav-button {
+    cursor: pointer;
+    cursor: hand;
+}
+
+.fb_img {
+    width:25px;
+    height:25px;
+    float:left;
+    border-radius:50%;
+    margin-right: 7px;
+}
+
+.topnav .drop-btn {
+    display: none;
+}
+
+#slide {
+    display: none;
+}
+
+/* SLIDE MENU */
+/* The side navigation menu */
+.sidenav {
+    display: none;
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background-color: white;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 10px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+    box-shadow: 3px 2px 8px rgba(0,0,0,.28);
+}
+
+/* The navigation menu links */
+.sidenav a {
+    padding: 8px 8px 8px 20px;
+    text-decoration: none;
+ /* color: #818181; */
+    display: block;
+    transition: 0.3s
+}
+
+/* Place the navbar at the bottom of the page, and make it stick */
+.bottom-navbar {
+    background:rgba(255, 255, 255, 0.5);
+    overflow: hidden;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 2;
+    padding: 0px;
+    margin: 0px;
+}
+
+.bottom-navbar a {
+    float: right;
+    display: block;
+    text-align: center;
+    font-weight: 400;
+    text-decoration: none;
+    padding: 15px;
+    font-size: 15px;
+    color: ;
+    margin: 0px;
+}
+
+ /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
+@media screen and (max-width: 900px) {
+
+    .topnav #drop {
+        display: none;
+    }
+
+    .topnav .drop-btn {
+        float: right;
+        display: block;
+    }
+
+    .sidenav {
+        display: block;
+    }
+
+}
+

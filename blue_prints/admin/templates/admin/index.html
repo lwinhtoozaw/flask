@@ -1,0 +1,35 @@
+{% from "admin/_render_field.html" import render_field %}
+
+{% extends "admin/layout/base.html" %}
+
+{% block title %}Index{% endblock %}
+
+{% block style %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <form id="login_form" class="form-signin">
+        <h2 class="form-signin-heading">Please Login</h2>
+        {{ form.csrf_token }}
+        {{ render_field(form.username) }}
+        {{ render_field(form.password) }}
+        {{ render_field(form.recaptcha) }}
+        <input type="submit" value="Login" class="btn btn-lg btn-primary btn-block"/>
+        <div id="response"></div>
+    </form>
+{% endblock %}
+
+{% block footer %}
+    <script type="text/javascript">
+        var csrf_token = "{{ csrf_token() }}";
+
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrf_token);
+                }
+            }
+        });
+    </script>
+{% endblock %}
