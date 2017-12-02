@@ -1,5 +1,3 @@
-{% from "admin/_render_field.html" import render_field %}
-
 {% extends "admin/layout/base.html" %}
 
 {% block title %}Index{% endblock %}
@@ -9,27 +7,47 @@
 {% endblock %}
 
 {% block content %}
-    <form id="login_form" class="form-signin">
+    <form id="login-form" class="form-signin">
         <h2 class="form-signin-heading">Please Login</h2>
-        {{ form.csrf_token }}
-        {{ render_field(form.username) }}
-        {{ render_field(form.password) }}
-        {{ render_field(form.recaptcha) }}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <div class="form-group">
+	        <input type="text" name="name" class="form-control" placeholder="Username"/>
+        </div>
+        <div class="form-group">
+	        <input type="password" name="password" class="form-control" placeholder="Password"/>
+        </div>
+        <div class="form-group">
+            {{ recaptcha }}
+        </div>
         <input type="submit" value="Login" class="btn btn-lg btn-primary btn-block"/>
         <div id="response"></div>
     </form>
 {% endblock %}
 
 {% block footer %}
-    <script type="text/javascript">
-        var csrf_token = "{{ csrf_token() }}";
+<script type="text/javascript">
+var csrf_token = "{{ csrf_token() }}";
 
-        $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", csrf_token);
-                }
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrf_token);
+        }
+    }
+});
+
+$(document).ready(function() {
+    $('#login-form').submit(function (e) {
+        $.ajax({
+            type: "POST",
+            url: "/admin/login_go/",
+            data: $('#login-form').serialize(), // serializes the form's elements.
+            success: function(data) {
+                $("#response").html(data)
             }
         });
-    </script>
+        e.preventDefault(); // block the traditional submission of the form.
+    });
+});
+</script>
 {% endblock %}

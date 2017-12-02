@@ -44,6 +44,26 @@ function log_out() {
     });
 }
 
+function fb_img(){
+    FB.getLoginStatus(function (response) {
+        if (response.status === 'connected') {
+            FB.api('/me?fields=id,name,email', function (response) {
+                $('#fb_img').html('<img class="fb_img" src="'+'http://graph.facebook.com/' + response.id + '/picture">');
+            });
+        }
+    });
+}
+
+function fb_img(){
+    FB.getLoginStatus(function (response) {
+        if (response.status === 'connected') {
+            FB.api('/me?fields=id,name,email', function (response) {
+                $('#fb_img').html('<img class="fb_img" src="'+'http://graph.facebook.com/' + response.id + '/picture">');
+            });
+        }
+    });
+}
+
 
 
 
