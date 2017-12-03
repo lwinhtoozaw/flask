@@ -10,7 +10,6 @@ import redis
 admin = Blueprint('admin', __name__, static_folder='statics', template_folder='templates')
 
 r = redis.StrictRedis(host = 'localhost', port = 6379, db = 0)
-f = redis.StrictRedis(host = 'localhost', port = 6379, db = 1)
 
 @admin.before_request
 def before_request():
@@ -38,28 +37,6 @@ def index():
         js = ['main.js', 'bootstrap.min.js']
         return render_template('admin/index.html', css = css, js = js)
 
-@admin.route('/login_go/', methods=['POST'])
-def login_go():
-    errors = []
-    name = request.form['name']
-    password = request.form['password']
-
-    if name == '' or password == '':
-        errors.append('Please fill in the form')
-    else:
-        try:
-            admin = Admin.select().where(Admin.name == name).get()
-        except Admin.DoesNotExist:
-            errors.append('User Not Found')
-        else:
-            if not check_password_hash(admin.password, password):
-                errors.append('Password do not match')
-    if not recaptcha.verify():
-        errors.append('Recaptcha')
-    if not errors:
-        session['user'] = admin.id
-    return render_template('admin/error.html', errors = errors)
-
 @admin.route('/success/')
 def success():
     if is_loggedin():
@@ -74,20 +51,77 @@ def out():
 
 @admin.route('/home/')
 def home():
-    if is_loggedin():
-        css = ['bootstrap.min.css','style.css']
-        js = ['main.js', 'popper.min.js', 'bootstrap.min.js']
-        category = r.smembers('category')
-        return render_template('admin/home.html', css = css, js = js, category = category)
-    else:
-        return redirect(url_for('admin.index'))
+    css = ['bootstrap.min.css','style.css']
+    js = ['main.js', 'popper.min.js', 'bootstrap.min.js']
+    category = Category.select()
+    return render_template('admin/home.html', css = css, js = js, category = category)
+
 
 @admin.route('/students/')
 def students():
-    if is_loggedin():
-        students = User.select().where(User.block == 0)
-        css = ['bootstrap.min.css','style.css']
-        js = ['main.js', 'popper.min.js', 'bootstrap.min.js']
-        return render_template('admin/students.html', css = css, js = js, students = students)
+    students = User.select().where(User.block == 0)
+    css = ['bootstrap.min.css','style.css']
+    js = ['main.js', 'popper.min.js', 'bootstrap.min.js']
+    return render_template('admin/students.html', css = css, js = js, students = students)
+
+
+@admin.route('/category/')
+def category():
+    categories = Category.select(Category.name)
+    css = ['bootstrap.min.css','style.css']
+    js = ['main.js', 'popper.min.js', 'bootstrap.min.js']
+    return render_template('admin/category.html', css = css, js = js, categories = categories)
+
+
+#AJAX
+@admin.route('/login_go/', methods=['POST'])
+def login_go():
+    errors = []
+    name = request.form['name']
+    password = request.form['password']
+    url = url_for('admin.success')
+    if name == '' or password == '':
+        errors.append('Please fill in the form')
     else:
-        return redirect(url_for('admin.index'))
+        try:
+            admin = Admin.select().where(Admin.name == name).get()
+        except Admin.DoesNotExist:
+            errors.append('User Not Found')
+        else:
+            if not check_password_hash(admin.password, password):
+                errors.append('Password do not match')
+    if not recaptcha.verify():
+        errors.append('Recaptcha')
+    if not errors:
+        session['user'] = admin.id
+    return render_template('admin/error.html', errors = errors, url = url)
+
+@admin.route('/add_category/', methods=['POST'])
+def add_category():
+    errors = []
+    name = request.form['name'].lower()
+    url = url_for('admin.category')
+    if name == '':
+        errors.append('Please fill in the form')
+    else:
+        try:
+            category = Category.select().where(Category.name == name).get()
+        except Category.DoesNotExist:
+            pass
+        else:
+            errors.append('Exists')
+    if not errors:
+        Category.insert( name = name).execute()
+    return render_template('admin/error.html', errors = errors, url = url)
+
+@admin.route('/add_course/', methods=['POST'])
+def add_course():
+    errors = []
+    name = request.form['name'].lower()
+    category = request.form['category']
+    keywords = request.form['keys'].lower
+    description = request.form['description']
+    url = url_for('admin.home')
+    if name == '' or category == '' or keywords == '' or description == '':
+        errors.append('Please fill in the form')
+    return render_template('admin/error.html', errors = errors, url = url)

@@ -1,0 +1,43 @@
+{% extends "main/layout/base.html" %}
+
+{% block title %}Main Page{% endblock %}
+
+{% block style %}
+    <!-- jQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <!-- jQuery local fallback -->
+    <script>window.jQuery || document.write('<script src="{{ url_for('main.static', filename='main/js/jquery.min.js') }}">\x3C/script>')</script>
+
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFmRwP64rMdRU4PxtZD_pEMUow7GVFoxc&callback=initMap"></script>
+    <script src="https://cdn.sobekrepository.org/includes/gmaps-markerwithlabel/1.9.1/gmaps-markerwithlabel-1.9.1.min.js"></script>
+{% endblock %}
+
+{% block content %}
+{% include 'main/navbar.html'%}
+<div id="cbp-fbscroller" class="cbp-fbscroller">
+    <nav>
+        <a href="#fbsection1" class="cbp-fbcurrent">Section 1</a>
+        <a href="#fbsection2">Section 2</a>
+        <a href="#fbsection3">Section 3</a>
+    </nav>
+    <section id="fbsection1">
+    </section>
+    <section id="fbsection2"></section>
+    <section id="fbsection3"></section>
+</div>
+{% endblock %}
+
+{% block footer %}
+<script type="text/javascript">
+var csrf_token = "{{ csrf_token() }}";
+
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrf_token);
+        }
+    }
+});
+</script>
+{% endblock %}

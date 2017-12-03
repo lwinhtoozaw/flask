@@ -10,24 +10,25 @@
 {% include 'admin/navbar.html' %}
 <div class="container">
 
-<form>
+<form id="course-form">
+  <div id="response"></div>
   <div class="form-group">
     <label for="title">Course Title</label>
-    <input type="text" class="form-control" placeholder="Enter Course Title">
+    <input type="text" name="name" class="form-control" placeholder="Enter Course Title">
   </div>
   <div class="form-group">
     <label for="category">Category</label>
-    <select class="form-control">
-    {% for i in category: %}
-      <option>
-        {{ i }}
+    <select class="form-control" name="category">
+    {% for c in category: %}
+      <option value="{{ c.id }}">
+        {{ c.name }}
       </option>
     {% endfor %}
     </select>
   </div>
   <div class="form-group">
     <label for="keywords">Keywords</label>
-    <input type="text" class="form-control" placeholder="Enter keywords">
+    <input type="text" name="keys" class="form-control" placeholder="Enter keywords">
   </div>
   <div class="form-group">
     <label for="description">Description</label>
@@ -49,6 +50,20 @@ $.ajaxSetup({
             xhr.setRequestHeader("X-CSRFToken", csrf_token);
         }
     }
+});
+
+$(document).ready(function() {
+    $('#course-form').submit(function (e) {
+        $.ajax({
+            type: "POST",
+            url: "/admin/add_course/",
+            data: $('#course-form').serialize(), // serializes the form's elements.
+            success: function(data) {
+                $("#response").html(data)
+            }
+        });
+        e.preventDefault(); // block the traditional submission of the form.
+    });
 });
 </script>
 {% endblock %}

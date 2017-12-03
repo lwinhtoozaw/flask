@@ -21,6 +21,17 @@ class Admin(BaseModel):
     name = CharField()
     password = CharField()
 
+class Category(BaseModel):
+    name = CharField()
+
+class Courses(BaseModel):
+    name = CharField()
+    category = CharField()
+    keywords = CharField()
+    description = TextField()
+    image = TextField()
+
+
 def initialize_db():
     db.connect()
-    db.create_tables([User, Admin], safe = True)
+    db.create_tables([User, Admin, Category, Courses], safe = True)
