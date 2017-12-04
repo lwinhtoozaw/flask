@@ -120,8 +120,16 @@ def add_course():
     name = request.form['name'].lower()
     category = request.form['category']
     keywords = request.form['keys'].lower
+    key_list = keywords.split(' ')
     description = request.form['description']
+
+    upload_url = 'main/images/'
     url = url_for('admin.home')
     if name == '' or category == '' or keywords == '' or description == '':
         errors.append('Please fill in the form')
+    course = Courses.select().where(Courses.name == name)
+    if course.wrapped_count() != 0:
+        errors.append('Course name already exists')
+    if not errors:
+        Courses.insert(name = name, category = category, keywords = key_list, description= description, image = image)
     return render_template('admin/error.html', errors = errors, url = url)

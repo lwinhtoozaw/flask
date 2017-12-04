@@ -36,18 +36,18 @@ $.ajaxSetup({
     }
 });
 
-$(document).ready(function() {
-    $('#login-form').submit(function (e) {
-        $.ajax({
-            type: "POST",
-            url: "/admin/login_go/",
-            data: $('#login-form').serialize(), // serializes the form's elements.
-            success: function(data) {
-                $("#response").html(data)
-            }
-        });
-        e.preventDefault(); // block the traditional submission of the form.
+
+$('#login-form').submit(function (e) {
+    $.ajax({
+        type: "POST",
+        url: "/admin/login_go/",
+        data: $('#login-form').serialize(), // serializes the form's elements.
+        success: function(data) {
+            $("#response").html(data)
+        }
     });
+    e.preventDefault(); // block the traditional submission of the form.
 });
+
 </script>
 {% endblock %}

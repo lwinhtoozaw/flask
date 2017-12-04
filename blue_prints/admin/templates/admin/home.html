@@ -10,7 +10,7 @@
 {% include 'admin/navbar.html' %}
 <div class="container">
 
-<form id="course-form">
+<form id="course-form" enctype=multipart/form-data>
   <div id="response"></div>
   <div class="form-group">
     <label for="title">Course Title</label>
@@ -34,6 +34,10 @@
     <label for="description">Description</label>
     <textarea name="description" class="form-control"></textarea>
   </div>
+  <div class="form-group">
+    <input type=file name=file class="form-control">
+  </div>
+
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
@@ -52,18 +56,17 @@ $.ajaxSetup({
     }
 });
 
-$(document).ready(function() {
-    $('#course-form').submit(function (e) {
-        $.ajax({
-            type: "POST",
-            url: "/admin/add_course/",
-            data: $('#course-form').serialize(), // serializes the form's elements.
-            success: function(data) {
-                $("#response").html(data)
-            }
-        });
-        e.preventDefault(); // block the traditional submission of the form.
+
+$('#course-form').submit(function (e) {
+    $.ajax({
+        type: "POST",
+        url: "/admin/add_course/",
+        data: $('#course-form').serialize(), // serializes the form's elements.
+        success: function(data) {
+            $("#response").html(data)
+        }
     });
+    e.preventDefault(); // block the traditional submission of the form.
 });
 </script>
 {% endblock %}

@@ -1,0 +1,108 @@
+{% extends "main/layout/base.html" %}
+
+{% block title %}Main Page{% endblock %}
+
+{% block style %}
+<style>
+/* Always set the map height explicitly to define the size of the div
+* element that contains the map. */
+#map-canvas {
+	height: 100%;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.my-custom-class-for-label {
+    max-width: 100px;
+	word-wrap: break-word;
+	border: 1px solid #eb3a44;
+	border-radius: 5px;
+	background: #fee1d7;
+	text-align: center;
+	font-weight: bold;
+	font-size: 11px;
+	color: #eb3a44;
+	padding: 3px;
+	letter-spacing: 0.5px;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFmRwP64rMdRU4PxtZD_pEMUow7GVFoxc&callback=initMap"></script>
+<script src="https://cdn.sobekrepository.org/includes/gmaps-markerwithlabel/1.9.1/gmaps-markerwithlabel-1.9.1.min.js"></script>
+
+<div id="map-canvas"></div>
+<script>
+function mark(con) {
+	var markerLatLng = new google.maps.LatLng(con.lat, con.lng);
+
+	var markerIcon = {
+	    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Video-Game-Controller-Icon.svg/1024px-Video-Game-Controller-Icon.svg.png',
+	    scaledSize: new google.maps.Size(32, 32),
+	    origin: new google.maps.Point(0, 0),
+	    anchor: new google.maps.Point(16, 36)
+	};
+
+	var infowindow = new google.maps.InfoWindow({
+		content: con.info
+	});
+
+	var markerLabel = con.title;
+
+	var marker = new MarkerWithLabel({
+		map: map,
+		animation: google.maps.Animation.DROP,
+		position: markerLatLng,
+		icon: markerIcon,
+		labelContent: markerLabel,
+		labelAnchor: new google.maps.Point(18, 12),
+		labelClass: "my-custom-class-for-label", // the CSS class for the label
+		labelInBackground: true
+	});
+
+	marker.addListener('click', function() {
+		infowindow.open(map, marker);
+	});
+	return marker;
+}
+
+// if HTML DOM Element that contains the map is found...
+if (document.getElementById('map-canvas')){
+	var markerLatLng = new google.maps.LatLng(16.774471, 96.171471);
+
+	var mapOptions = {
+		zoom: 16,
+		center: markerLatLng,
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		gestureHandling: 'greedy'
+	};
+
+	var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+	var con = {
+		lat: 16.774473,
+		lng: 96.171443,
+		title: "Myanmar Aung",
+		info: "Big Game Shop",
+	};
+
+	var con2 = {
+		lat: 16.774493,
+		lng: 96.172339,
+		title: "Difficult",
+		info: "Huge Game Shop",
+	};
+
+
+	var mcOptions = {gridSize: 50, maxZoom: 15, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'};
+	var markers = [mark(con), mark(con2)];
+	var mc = new MarkerClusterer(map, markers, mcOptions);
+}
+</script>
+{% endblock %}
