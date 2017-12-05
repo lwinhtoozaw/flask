@@ -9,7 +9,7 @@ import redis
 
 admin = Blueprint('admin', __name__, static_folder='statics', template_folder='templates')
 
-r = redis.StrictRedis(host = 'localhost', port = 6379, db = 0)
+r = redis.StrictRedis(host= '0.0.0.0', port = 6379, db = 0)
 
 @admin.before_request
 def before_request():
