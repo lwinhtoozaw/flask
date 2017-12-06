@@ -1,2 +1,5 @@
 env
 .idea/
+__init__.pyc
+model_1.pyc
+views.pyc
