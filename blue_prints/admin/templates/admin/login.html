@@ -27,7 +27,6 @@
 {% block footer %}
 <script type="text/javascript">
 var csrf_token = "{{ csrf_token() }}";
-
 $.ajaxSetup({
     beforeSend: function(xhr, settings) {
         if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
@@ -35,12 +34,10 @@ $.ajaxSetup({
         }
     }
 });
-
-
 $('#login-form').submit(function (e) {
     $.ajax({
         type: "POST",
-        url: "/admin/login_go/",
+        url: "{{ url_for('admin.login') }}",
         data: $('#login-form').serialize(), // serializes the form's elements.
         success: function(data) {
             $("#response").html(data)
@@ -48,6 +45,5 @@ $('#login-form').submit(function (e) {
     });
     e.preventDefault(); // block the traditional submission of the form.
 });
-
 </script>
 {% endblock %}
