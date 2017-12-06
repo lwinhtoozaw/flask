@@ -22,8 +22,6 @@ def login():
     url = url_for('admin.home')
     if name == '' or password == '':
         errors.append('Please fill in the form')
-    elif not recaptcha.verify():
-        errors.append('Recaptcha')
     else:
         rid = r.hget('user:list', name)
         if rid != None:
@@ -39,7 +37,7 @@ def login():
 
         
 @admin.route('/home/')
-def success():
+def home():
     return 'YEah'
 
 @admin.route('/logout/')
