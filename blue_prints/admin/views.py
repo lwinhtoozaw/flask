@@ -8,11 +8,20 @@ admin = Blueprint('admin', __name__, static_folder='statics', template_folder='t
 
 r = redis.StrictRedis(host = 'localhost', port = 6379, db = 0)
 
+def is_loggedin():
+    if 'user' not in session:
+        return False
+    else:
+        return True
+
 @admin.route('/')
 def index():
-    css = ['style.css', 'bootstrap.min.css']
-    js = ['main.js', 'bootstrap.min.js']
-    return render_template('admin/login.html', css = css, js = js)
+    if is_loggedin():
+        return redirect(url_for('admin.home'))
+    else:
+        css = ['style.css', 'bootstrap.min.css']
+        js = ['main.js', 'bootstrap.min.js']
+        return render_template('admin/login.html', css = css, js = js)
 
 @admin.route('/login/', methods = ['POST'])
 def login():
@@ -38,7 +47,10 @@ def login():
         
 @admin.route('/home/')
 def home():
-    return 'YEah'
+    if is_loggedin():
+        return 'YEah'
+    else:
+        return redirect(url_for('admin.index'))
 
 @admin.route('/logout/')
 def logout():
